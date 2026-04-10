@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <title>Miles Start Page | 个人浏览器启示页</title>
+  <meta name="description" content="一个干净整洁、带 Liquid Glass 特效的个人浏览器首页，集成日程表、快捷搜索与动态壁纸功能。" />
+  <meta name="keywords" content="起始页, 浏览器主页, Dashboard, 前端特效, 效率工具" />
+  <meta name="author" content="Miles" />
+  
+  <meta name="robots" content="index, follow" />
+  
+  <link rel="canonical" href="https://show.miles.bar/" />
+
+  <meta property="og:title" content="Miles Start Page" />
+  <meta property="og:description" content="极致丝滑的 Liquid Glass 风格个人主页。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://show.miles.bar/" />
+
+
+  <style>
+    :root {
+      --text-main: #ffffff;
+      --text-sub: rgba(255, 255, 255, 0.72);
+      --text-faint: rgba(255, 255, 255, 0.42);
+      --accent: #73ffd8;
+
+      --glass-bg:
+        linear-gradient(135deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 42%, rgba(255,255,255,0.02) 100%);
+      --glass-border: rgba(255,255,255,0.20);
+      --glass-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.30),
+        inset 0 -1px 0 rgba(255,255,255,0.04),
+        0 18px 42px rgba(0,0,0,0.28);
+
+      --blur-strong: blur(34px) saturate(175%);
+      --blur-soft: blur(22px) saturate(155%);
+
+      --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
+      --card-rx: 0deg;
+      --card-ry: 0deg;
+      --card-tx: 0px;
+      --card-ty: 0px;
+      --shine-x: 50%;
+      --shine-y: 50%;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+      position: fixed;
+      background: #000;
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      position: relative;
+    }
+
+    a, button, input {
+      font: inherit;
+    }
+
+    /* ===== Background ===== */
+    .bg-layer {
+      position: absolute;
+      inset: -2%;
+      width: 104%;
+      height: 104%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition:
+        opacity 1.4s var(--ease-smooth),
+        transform 14s linear,
+        filter 1.2s var(--ease-smooth);
+      will-change: opacity, transform, filter;
+    }
+    #bg-a {
+  background-color: #1a1a2e; /* 柔和的暗色底，防闪瞎眼 */
+  z-index: 1; opacity: 1; transform: scale(1.04);
+}
+
+    #bg-b { z-index: 1; opacity: 0; transform: scale(1.08); }
+
+    #overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.42)),
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 24%),
+    radial-gradient(circle at 80% 24%, rgba(255,255,255,0.04), transparent 20%);
+  transition: background 0.7s var(--ease-smooth), backdrop-filter 0.7s var(--ease-smooth);
+}
+
+body.dashboard-active #overlay {
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.38), rgba(0,0,0,0.58)),
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.04), transparent 20%),
+    radial-gradient(circle at 82% 20%, rgba(255,255,255,0.03), transparent 18%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+    .ambient-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(130px);
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 1s ease;
+      animation: blobFloat 16s infinite alternate ease-in-out;
+    }
+
+    .blob-1 {
+      width: 42vw; height: 42vw;
+      top: -10%; left: 6%;
+      background: rgba(255, 77, 127, 0.48);
+    }
+    .blob-2 {
+      width: 44vw; height: 44vw;
+      right: -8%; bottom: -8%;
+      background: rgba(0, 214, 255, 0.44);
+      animation-delay: -5s;
+    }
+    .blob-3 {
+      width: 28vw; height: 28vw;
+      left: 42%; top: 34%;
+      background: rgba(131, 95, 255, 0.40);
+      animation-delay: -9s;
+    }
+
+    @keyframes blobFloat {
+      0%   { transform: translate3d(0,0,0) scale(1) rotate(0deg); }
+      100% { transform: translate3d(45px,75px,0) scale(1.08) rotate(12deg); }
+    }
+
+    body.dashboard-active .ambient-blob {
+  opacity: 0.18;
+}
+
+    /* ===== Cursor Glow ===== */
+    #cursor-glow {
+      position: fixed;
+      width: 104px;
+      height: 104px;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0;
+      transform: translate3d(-50%, -50%, 0);
+      transition: opacity 0.22s ease;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(115,255,216,0.12) 22%, rgba(115,255,216,0.06) 42%, rgba(115,255,216,0.00) 72%);
+      filter: blur(10px);
+      mix-blend-mode: screen;
+    }
+
+    /* ===== Common Glass ===== */
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: var(--blur-strong);
+      -webkit-backdrop-filter: var(--blur-strong);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.18), transparent 28%, transparent 70%, rgba(255,255,255,0.06)),
+        radial-gradient(circle at var(--shine-x) var(--shine-y), rgba(255,255,255,0.12), transparent 32%);
+      opacity: 0.8;
+    }
+
+    .glass::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+      opacity: 0.11;
+    }
+
+    /* ===== Top Right ===== */
+    .copyright {
+      position: fixed;
+      top: 22px;
+      right: 28px;
+      z-index: 70;
+      font-size: 0.78rem;
+      letter-spacing: 1.3px;
+      color: rgba(255,255,255,0.38);
+      pointer-events: none;
+    }
+
+    /* ===== App Frame ===== */
+    #app {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ===== Home / Hero ===== */
+    #home-stage {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 12;
+      transition: opacity 0.55s var(--ease-smooth), transform 0.72s var(--ease-spring);
+    }
+
+    #hero-section {
+        
+      width: min(92vw, 760px);
+      text-align: center;
+      transition: transform 0.72s var(--ease-spring), opacity 0.48s var(--ease-smooth);
+    }
+
+    body.dashboard-active #home-stage {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    body.dashboard-active #hero-section {
+      transform: translateY(-18px) scale(0.96);
+      opacity: 0;
+    }
+
+    #clock {
+      font-size: clamp(4.8rem, 10vw, 8.6rem);
+      line-height: 0.92;
+      font-weight: 720;
+      letter-spacing: -0.05em;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      margin-bottom: 12px;
+    }
+
+    #date {
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      color: var(--text-sub);
+      letter-spacing: 0.02em;
+      margin-bottom: 34px;
+    }
+
+    .search-wrapper {
+      width: min(88vw, 680px);
+      margin: 0 auto;
+      position: relative;
+    }
+
+    #search-input {
+      width: 100%;
+      height: 70px;
+      padding: 0 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.22);
+      outline: none;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.03));
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.18),
+        0 14px 38px rgba(0,0,0,0.20);
+      backdrop-filter: var(--blur-soft);
+      -webkit-backdrop-filter: var(--blur-soft);
+      font-size: 1.12rem;
+      transition:
+        transform 0.35s var(--ease-smooth),
+        background 0.35s var(--ease-smooth),
+        border-color 0.35s var(--ease-smooth),
+        box-shadow 0.35s var(--ease-smooth);
+      user-select: auto;
+    }
+
+    #search-input::placeholder {
+      color: rgba(255,255,255,0.52);
+    }
+
+    #search-input:focus {
+      transform: translateY(-1px) scale(1.01);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.07));
+      border-color: rgba(255,255,255,0.34);
+      box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.22),
+        0 18px 48px rgba(0,0,0,0.28);
+    }
+
+    .search-hint {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      opacity: 0;
+      transition: opacity 0.28s ease;
+    }
+
+    #search-input:focus + .search-hint {
+      opacity: 1;
+    }
+
+    /* ===== Dashboard ===== */
+    #dashboard-stage {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s var(--ease-smooth);
+    }
+
+    body.dashboard-active #dashboard-stage {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+
+    .mini-clock {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .mini-date {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+    }
+
+    
+
+    body.dashboard-active #dashboard-panel {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-width: 0;
+    }
+    /* 让 dashboard 不再居中悬浮，而是更像真正面板 */
+#dashboard-panel {
+  position: absolute;
+  left: 50%;
+  top: calc(env(safe-area-inset-top, 0px) + 26px);
+  width: min(1120px, 92vw);
+  transform: translateX(-50%) scale(0.98);
+  transform-origin: top center;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  opacity: 0;
+  transition: transform 0.7s var(--ease-spring), opacity 0.4s var(--ease-smooth);
+}
+
+body.dashboard-active #dashboard-panel {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+.dashboard-topbar {
+  min-height: 82px;
+  border-radius: 28px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-top-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dashboard-top-right {
+  font-size: 0.82rem;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.42);
+}
+
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.schedule-card {
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.mini-clock {
+  font-size: 2rem;
+  font-weight: 720;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.mini-date {
+  font-size: 0.95rem;
+  color: var(--text-sub);
+}
+
+/* 卡片统一更干净 */
+.liquid-card {
+  border-radius: 28px;
+  padding: 22px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    0 18px 44px rgba(0,0,0,0.24);
+}
+
+/* Quick links 更紧凑 */
+.links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.link-item {
+  min-height: 88px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.link-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.link-name {
+  font-size: 0.92rem;
+}
+
+/* 日历缩一点，别太占 */
+.calendar-wrap {
+  padding-bottom: 18px;
+}
+
+.cal-grid {
+  gap: 4px;
+}
+
+.cal-date {
+  position: relative;
+  width: 38px;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  border-radius: 50%;
+}
+
+/* 右侧课表别过高，留出呼吸感 */
+
+
+.period-item {
+  min-height: 58px;
+  border-radius: 16px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.period-time {
+  flex: 0 0 96px;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.72);
+}
+
+.period-subject {
+  font-size: 1rem;
+  font-weight: 620;
+}
+
+.day-badge {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* 去掉外部漂浮版权 */
+.copyright {
+  display: none;
+}
+    .liquid-card {
+      border-radius: 30px;
+      padding: 24px;
+      min-width: 0;
+      transform:
+        perspective(1200px)
+        rotateX(var(--card-rx))
+        rotateY(var(--card-ry))
+        translate3d(var(--card-tx), var(--card-ty), 0);
+      transition:
+        transform 0.22s ease,
+        border-color 0.26s ease,
+        box-shadow 0.26s ease,
+        background 0.26s ease;
+      will-change: transform;
+    }
+
+    .liquid-card:hover {
+      border-color: rgba(255,255,255,0.28);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.34),
+        inset 0 -1px 0 rgba(255,255,255,0.06),
+        0 24px 54px rgba(0,0,0,0.34);
+    }
+
+    .card-title {
+      position: relative;
+      z-index: 1;
+      font-size: 1.02rem;
+      font-weight: 620;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 18px;
+      letter-spacing: 0.02em;
+    }
+
+    .links-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .link-item {
+      min-height: 92px;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 20px;
+      padding: 16px 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition:
+        transform 0.26s var(--ease-spring),
+        background 0.26s ease,
+        border-color 0.26s ease,
+        box-shadow 0.26s ease;
+    }
+
+    .link-item:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.22);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+    }
+
+    .link-icon {
+      font-size: 1.7rem;
+      margin-bottom: 8px;
+    }
+
+    .link-name {
+      font-size: 0.93rem;
+      font-weight: 560;
+    }
+
+    /* ===== Calendar ===== */
+    .calendar-wrap {
+      min-height: 348px;
+    }
+
+    .cal-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .cal-title {
+      font-size: 1.03rem;
+      font-weight: 620;
+      color: #fff;
+    }
+
+    .cal-nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .cal-btn {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #fff;
+      background: rgba(255,255,255,0.10);
+      display: grid;
+      place-items: center;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .cal-btn:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+    }
+
+    .cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+    }
+
+    .cal-day-name {
+      font-size: 0.74rem;
+      color: var(--text-sub);
+      font-weight: 700;
+      padding-bottom: 8px;
+    }
+
+    .cal-date {
+  position: relative;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+
+  padding: 0 !important;
+  margin: 0;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  justify-self: center;
+  align-self: center;
+  place-self: center;
+
+  flex: 0 0 38px;
+  aspect-ratio: 1 / 1;
+  border-radius: 999px;
+
+  font-size: 0.92rem;
+  line-height: 1;
+  cursor: pointer;
+  color: rgba(255,255,255,0.92);
+  transition: background 0.18s ease, transform 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.cal-date:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-1px);
+    }
+
+    .cal-date.muted {
+  color: rgba(255,255,255,0.18);
+  pointer-events: none;
+}
+
+.cal-date.today {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.cal-date.selected {
+  background: rgba(255,255,255,0.94);
+  color: #000;
+  font-weight: 740;
+  box-shadow: 0 8px 20px rgba(255,255,255,0.18);
+}
+
+.cal-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  left: 50%;
+  bottom: 4px;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.5);
+}
+
+.cal-date.today .cal-dot {
+  background: var(--accent);
+}
+
+.cal-date.selected .cal-dot {
+  background: #000;
+    }
+
+
+
+
+    /* ===== Schedule ===== */
+    .schedule-card {
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .schedule-header {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .schedule-title-area h2 {
+      font-size: 1.18rem;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+
+    .schedule-title-area p {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+    }
+
+    .day-badge {
+      flex: 0 0 auto;
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 650;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+    }
+
+    .timeline {
+      position: relative;
+      z-index: 1;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.18) transparent;
+    }
+
+    .timeline::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .timeline::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+    }
+
+    .period-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 64px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .period-item:hover {
+      background: rgba(255,255,255,0.07);
+      transform: translateY(-1px);
+    }
+
+    .period-item.current {
+      background: linear-gradient(135deg, rgba(115,255,216,0.15), rgba(115,255,216,0.04));
+      border-color: rgba(115,255,216,0.26);
+      box-shadow: inset 0 0 0 1px rgba(115,255,216,0.08);
+    }
+
+    .period-time {
+      flex: 0 0 100px;
+      font-size: 0.92rem;
+      font-weight: 560;
+      color: var(--text-sub);
+    }
+
+    .period-item.current .period-time {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .period-subject {
+      flex: 1 1 auto;
+      min-width: 0;
+      font-size: 1.06rem;
+      font-weight: 620;
+      color: #fff;
+    }
+
+    .period-status {
+      flex: 0 0 auto;
+      font-size: 0.84rem;
+      font-weight: 680;
+      color: var(--accent);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(115,255,216,0.08);
+      border: 1px solid rgba(115,255,216,0.18);
+    }
+
+    .empty-state {
+      display: grid;
+      place-items: center;
+      flex: 1 1 auto;
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 1.02rem;
+      min-height: 220px;
+    }
+        /* ===== Wallpaper Modal ===== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wallpaper-modal {
+      background: #ffffff;
+      width: 90%;
+      max-width: 540px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.3);
+      transform: translateY(20px) scale(0.96);
+      transition: transform 0.3s var(--ease-spring);
+      display: flex;
+      flex-direction: column;
+      max-height: 80vh;
+      color: #333;
+    }
+
+    .modal-overlay.active .wallpaper-modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #888;
+      transition: color 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: #000;
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .wallpaper-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+        .wp-item {
+      aspect-ratio: 4 / 3;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      background-color: #e5e5ea; /* 👇 新增這行：給圖片一個淺灰色底，避免隱形 👇 */
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 3px solid transparent;
+    }
+
+
+    .wp-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .wp-item.active {
+      border-color: #007aff;
+    }
+
+    .wp-item.active::after {
+      content: '✓';
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: #007aff;
+      color: #fff;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,122,255,0.4);
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #f0f0f0;
+      text-align: right;
+      background: #fafafa;
+    }
+
+    .btn-reset {
+      background: #f0f0f0;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 560;
+      color: #444;
+      transition: background 0.2s ease;
+    }
+
+    .btn-reset:hover {
+      background: #e4e4e4;
+    }
+
+    /* ===== Mobile ===== */
+    @media (min-width: 820px) and (max-width: 1180px) {
+  #dashboard-panel {
+    width: 94vw;
+    top: calc(env(safe-area-inset-top, 0px) + 18px);
+  }
+
+  .dashboard-main {
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .liquid-card {
+    border-radius: 24px;
+    padding: 18px;
+  }
+
+  .schedule-card {
+    max-height: calc(100vh - 170px);
+  }
+
+  .dashboard-topbar {
+    min-height: 74px;
+    border-radius: 24px;
+    padding: 16px 18px;
+  }
+
+  .mini-clock {
+    font-size: 1.7rem;
+  }
+
+  .mini-date {
+    font-size: 0.88rem;
+  }
+}
+        /* ===== Mobile & Tablet ===== */
+    @media (max-width: 980px) {
+      #dashboard-panel {
+        width: 92vw;
+        top: calc(env(safe-area-inset-top, 20px) + 20px);
+        max-height: calc(100vh - 40px); /* 限制最大高度 */
+        overflow-y: auto; /* 開啟內部垂直滑動 */
+        -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動更順暢 */
+        padding-bottom: 20px;
+      }
+      
+      /* 隱藏滾動條讓畫面更乾淨 */
+      #dashboard-panel::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* 👇 這行最重要！把原本左右兩欄改成上下垂直堆疊 👇 */
+      .dashboard-main {
+        grid-template-columns: 1fr; 
+        gap: 16px;
+      }
+
+      .left-column {
+        gap: 16px;
+      }
+
+      .liquid-card {
+        border-radius: 24px;
+        padding: 20px;
+      }
+
+      .calendar-wrap {
+        min-height: auto;
+      }
+
+      .timeline {
+        max-height: none;
+      }
+
+      .schedule-card {
+        min-height: 400px; /* 給課表一個基本高度 */
+      }
+    }
+
+    
+
+    @media (max-width: 860px) {
+      #clock {
+        font-size: clamp(4.2rem, 16vw, 5.4rem);
+      }
+
+      #date {
+        font-size: 0.98rem;
+        margin-bottom: 22px;
+      }
+
+      #search-input {
+        height: 60px;
+        padding: 0 22px;
+        font-size: 1rem;
+      }
+
+      .search-hint {
+        font-size: 0.78rem;
+      }
+
+      #dashboard-panel {
+        width: 92vw;
+        max-height: 76vh;
+        overflow-y: auto;
+        padding-right: 2px;
+      }
+
+      #dashboard-panel::-webkit-scrollbar {
+        width: 0;
+        display: none;
+      }
+      .cal-date {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    flex-basis: 34px;
+    font-size: 0.88rem;
+      }
+
+      .period-time {
+        flex-basis: 86px;
+        font-size: 0.84rem;
+      }
+
+      .period-subject {
+        font-size: 0.98rem;
+      }
+
+      .link-item {
+        min-height: 84px;
+      }
+
+      .link-icon {
+        font-size: 1.45rem;
+      }
+
+      .mini-clock {
+        font-size: 1.5rem;
+      }
+
+      .mini-date {
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bg-a" class="bg-layer"></div>
+  <div id="bg-b" class="bg-layer"></div>
+  <div id="overlay"></div>
+
+  <div class="ambient-blob blob-1"></div>
+  <div class="ambient-blob blob-2"></div>
+  <div class="ambient-blob blob-3"></div>
+
+  <div id="cursor-glow"></div>
+  <div class="copyright">Copyright © Miles</div>
+
+  <div id="app">
+    <!-- Home -->
+    <section id="home-stage">
+      <div id="hero-section">
+          <h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;">
+  Miles 个人启示页与日程管理面板
+</h1>
+
+        <div id="clock">00:00</div>
+        <div id="date">載入中...</div>
+
+        <div class="search-wrapper">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Google 搜尋，或輸入網址..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <div class="search-hint">✨ <b>!yt</b> 搜 YouTube，<b>!b</b> 搜 Bilibili，<b>!g</b> 問 Gemini</div>
+
+          </div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard-stage">
+      
+
+      <div id="dashboard-panel">
+  <div class="dashboard-topbar glass">
+    <div class="dashboard-top-left">
+      <div class="mini-clock" id="mini-clock">00:00</div>
+      <div class="mini-date" id="mini-date">Loading...</div>
+    </div>
+    <div class="dashboard-top-right">Copyright © Miles</div>
+  </div>
+
+  <div class="dashboard-main">
+    <div class="left-column">
+      <div class="liquid-card glass tilt-card">
+        <div class="card-title">Quick Links</div>
+        <div class="links-grid">
+          <a href="#" class="link-item" id="btn-wallpaper">
+  <div class="link-icon">🖼️</div>
+  <div class="link-name">壁紙偏好</div>
+</a>
+
+          <a href="https://www.youtube.com" class="link-item" target="_blank" rel="noopener noreferrer">
+            <div class="link-icon">▶️</div>
+            <div class="link-name">YouTube</div>
+          </a>
+          <a href="https://gemini.google.com" class="link-item" target="_blank" rel="noopener noreferrer">
+            <div class="link-icon">✨</div>
+            <div class="link-name">Gemini</div>
+          </a>
+          <a href="https://eclass.fms.edu.hk/templates/" class="link-item" target="_blank" rel="noopener noreferrer">
+            <div class="link-icon">🏫</div>
+            <div class="link-name">eClass</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="liquid-card glass tilt-card calendar-wrap">
+        <div class="cal-header">
+          <div class="cal-title" id="cal-month-year">March 2026</div>
+          <div class="cal-nav">
+            <button class="cal-btn" id="cal-prev" aria-label="Previous month">‹</button>
+            <button class="cal-btn" id="cal-next" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+    </div>
+
+    <div class="liquid-card glass tilt-card schedule-card">
+      <div class="schedule-header">
+        <div class="schedule-title-area">
+          <h2 id="schedule-day-title">Today's Schedule</h2>
+          <p id="schedule-date-subtitle">March 28, 2026</p>
+        </div>
+        <div class="day-badge" id="schedule-badge">Loading...</div>
+      </div>
+      <div class="timeline" id="schedule-list"></div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="wallpaper-modal-overlay">
+      <div class="wallpaper-modal">
+        <div class="modal-header">
+          <h3>壁纸偏好</h3>
+          <button class="modal-close" id="modal-close">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="wallpaper-grid" id="wallpaper-grid"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-reset" id="btn-reset-bing">恢复 Bing 每日壁纸</button>
+        </div>
+      </div>
+    </div>
+
+</section>
+  </div>
+  
+  <script>
+        /* =========================
+       Background
+    ========================= */
+       function syncScheduleHeight() {
+      const leftColumn = document.querySelector('.left-column');
+      const scheduleCard = document.querySelector('.schedule-card');
+
+      if (!leftColumn || !scheduleCard) return;
+
+      // 👇 新增這段：如果是手機螢幕 (寬度小於 980px)，取消高度綁定，讓它自然延伸 👇
+      if (window.innerWidth <= 980) {
+        scheduleCard.style.height = 'auto';
+        return;
+      }
+
+      // 電腦版才執行高度同步
+      const leftHeight = leftColumn.offsetHeight;
+      scheduleCard.style.height = `${leftHeight}px`;
+    }
+
+
+    window.addEventListener('load', syncScheduleHeight);
+    window.addEventListener('resize', syncScheduleHeight);
+    window.addEventListener('orientationchange', syncScheduleHeight);
+
+    const leftColumnEl = document.querySelector('.left-column');
+    if (leftColumnEl) {
+      const ro = new ResizeObserver(() => syncScheduleHeight());
+      ro.observe(leftColumnEl);
+    }
+
+    const bgA = document.getElementById("bg-a");
+    const bgB = document.getElementById("bg-b");
+    let activeBg = bgA;
+    let standbyBg = bgB;
+    let lastBingUrl = "";
+
+    const fallbackWallpapers = [
+      "https://images.unsplash.com/photo-1506744626753-eba7bc10871e?q=80&w=1920&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1920&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1920&auto=format&fit=crop"
+    ];
+
+    function getFallbackWallpaper() {
+      return fallbackWallpapers[Math.floor(Math.random() * fallbackWallpapers.length)];
+    }
+
+    // 結合了快取功能的新版 getBingWallpaper
+    async function getBingWallpaper() {
+      const today = new Date().toDateString();
+      const cachedData = localStorage.getItem("bing_wallpaper_cache");
+      
+      if (cachedData) {
+        const { url, date } = JSON.parse(cachedData);
+        if (date === today && url) {
+          return { url };
+        }
+      }
+
+      const res = await fetch("/api/bing-wallpaper");
+      if (!res.ok) {
+        throw new Error(`Wallpaper API failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      localStorage.setItem("bing_wallpaper_cache", JSON.stringify({
+        url: data.url,
+        date: today
+      }));
+
+      return data;
+    }
+
+    // 修復後完整的 swapBackground 函數
+    async function swapBackground(initial = false) {
+      let url = "";
+
+      try {
+        const data = await getBingWallpaper();
+        url = data.url;
+
+        if (!initial && url === lastBingUrl) return;
+        lastBingUrl = url;
+      } catch (err) {
+        console.error("Bing 壁紙載入失敗，改用備用圖：", err);
+        url = getFallbackWallpaper();
+      }
+
+      standbyBg.style.backgroundImage = `url("${url}")`;
+      standbyBg.style.transform = "scale(1.08)";
+      standbyBg.style.opacity = "0";
+
+      requestAnimationFrame(() => {
+        standbyBg.style.opacity = "1";
+        standbyBg.style.transform = "scale(1.04)";
+        activeBg.style.opacity = "0";
+      });
+
+      setTimeout(() => {
+        const temp = activeBg;
+        activeBg = standbyBg;
+        standbyBg = temp;
+        standbyBg.style.transform = "scale(1.08)";
+      }, initial ? 50 : 1400);
+    }
+
+
+
+    /* =========================
+       Hong Kong Time Helpers
+    ========================= */
+    function getHKParts(date = new Date()) {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Hong_Kong",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      }).formatToParts(date);
+
+      const map = {};
+      parts.forEach(p => {
+        if (p.type !== "literal") map[p.type] = p.value;
+      });
+
+      return {
+        year: Number(map.year),
+        month: Number(map.month),
+        day: Number(map.day),
+        hour: Number(map.hour),
+        minute: Number(map.minute),
+        second: Number(map.second)
+      };
+    }
+
+    function getHKDateObject() {
+      const p = getHKParts();
+      return new Date(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
+    }
+
+    function isSameDay(d1, d2) {
+      return (
+        d1.getFullYear() === d2.getFullYear() &&
+        d1.getMonth() === d2.getMonth() &&
+        d1.getDate() === d2.getDate()
+      );
+    }
+
+    /* =========================
+       Clock
+    ========================= */
+    const clockEl = document.getElementById("clock");
+    const dateEl = document.getElementById("date");
+    const miniClockEl = document.getElementById("mini-clock");
+    const miniDateEl = document.getElementById("mini-date");
+
+    function updateClock() {
+      const now = new Date();
+
+      const timeText = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Hong_Kong",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }).format(now);
+
+      const homeDateText = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Hong_Kong",
+        weekday: "long",
+        month: "long",
+        day: "numeric"
+      }).format(now);
+
+      const miniDateText = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Hong_Kong",
+        month: "short",
+        day: "numeric",
+        weekday: "short"
+      }).format(now);
+
+      clockEl.textContent = timeText;
+      dateEl.textContent = homeDateText;
+      miniClockEl.textContent = timeText;
+      miniDateEl.textContent = miniDateText;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    /* =========================
+       Search
+    ========================= */
+    const searchInput = document.getElementById("search-input");
+
+    function looksLikeURL(value) {
+      return /^(https?:\/\/|[a-z0-9-]+\.[a-z]{2,})(\/.*)?$/i.test(value);
+    }
+
+    function goSearch(raw) {
+      const q = raw.trim();
+      if (!q) return;
+
+      if (q.startsWith("!yt ")) {
+        window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(q.slice(4))}`;
+        return;
+      }
+
+      if (q.startsWith("!b ")) {
+        window.location.href = `https://search.bilibili.com/all?keyword=${encodeURIComponent(q.slice(3))}`;
+        return;
+      }
+    
+    if (q.startsWith("!g ")) {
+    // 提取你要問的問題
+    const promptText = q.slice(3).trim();
+    
+    // 嘗試將文字自動複製到剪貼簿
+    navigator.clipboard.writeText(promptText).then(() => {
+      // 複製成功後，直接打開 Gemini 網頁
+      window.location.href = "https://gemini.google.com/app";
+    }).catch(err => {
+      // 萬一瀏覽器安全機制阻擋了複製，依然照常跳轉
+      window.location.href = "https://gemini.google.com/app";
+    });
+    return;
+  }
+
+
+
+      if (looksLikeURL(q)) {
+        const url = /^https?:\/\//i.test(q) ? q : `https://${q}`;
+        window.location.href = url;
+        return;
+      }
+
+      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(q)}`;
+    }
+
+    searchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") goSearch(searchInput.value);
+    });
+
+    window.addEventListener("load", () => {
+  if (window.matchMedia("(pointer:fine)").matches && window.innerWidth > 980) {
+    setTimeout(() => searchInput.focus(), 150);
+  }
+});
+
+    /* =========================
+       Dashboard State
+    ========================= */
+    const body = document.body;
+    const dashboardStage = document.getElementById("dashboard-stage");
+
+    function enterDashboard() {
+      body.classList.add("dashboard-active");
+      searchInput.blur();
+    }
+
+    function exitDashboard() {
+      body.classList.remove("dashboard-active");
+      setTimeout(() => searchInput.focus(), 260);
+    }
+
+    // 首頁：點搜尋框以外空白 -> 進入日曆面板
+    document.getElementById("home-stage").addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".search-wrapper")) return;
+      enterDashboard();
+    });
+
+    // 面板：點空白 -> 回首頁
+    dashboardStage.addEventListener("pointerdown", (e) => {
+  if (wpModal.classList.contains("active")) return;
+  if (!e.target.closest("#dashboard-panel")) {
+    exitDashboard();
+  }
+});
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && body.classList.contains("dashboard-active")) {
+        exitDashboard();
+      }
+    });
+
+    /* =========================
+       Cursor Glow
+    ========================= */
+    const cursorGlow = document.getElementById("cursor-glow");
+    let pointerVisible = false;
+
+    function showGlow() {
+      if (!pointerVisible) {
+        pointerVisible = true;
+        cursorGlow.style.opacity = "1";
+      }
+    }
+
+    function hideGlow() {
+      pointerVisible = false;
+      cursorGlow.style.opacity = "0";
+    }
+
+    window.addEventListener("pointermove", (e) => {
+      if (e.pointerType === "touch") {
+        hideGlow();
+        return;
+      }
+      cursorGlow.style.left = `${e.clientX}px`;
+      cursorGlow.style.top = `${e.clientY}px`;
+      showGlow();
+    });
+
+    window.addEventListener("pointerleave", hideGlow);
+    window.addEventListener("blur", hideGlow);
+    window.addEventListener("touchstart", hideGlow, { passive: true });
+
+    /* =========================
+       Liquid Refraction Cards
+    ========================= */
+    function bindTilt(card) {
+      const maxRotate = 5;
+      const maxShift = 6;
+
+      function reset() {
+        card.style.setProperty("--card-rx", "0deg");
+        card.style.setProperty("--card-ry", "0deg");
+        card.style.setProperty("--card-tx", "0px");
+        card.style.setProperty("--card-ty", "0px");
+        card.style.setProperty("--shine-x", "50%");
+        card.style.setProperty("--shine-y", "50%");
+      }
+
+      function update(clientX, clientY) {
+        const rect = card.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        const px = x / rect.width;
+        const py = y / rect.height;
+
+        const ry = (px - 0.5) * (maxRotate * 2);
+        const rx = (0.5 - py) * (maxRotate * 2);
+
+        const tx = (px - 0.5) * (maxShift * 2);
+        const ty = (py - 0.5) * (maxShift * 2);
+
+        card.style.setProperty("--card-rx", `${rx.toFixed(2)}deg`);
+        card.style.setProperty("--card-ry", `${ry.toFixed(2)}deg`);
+        card.style.setProperty("--card-tx", `${tx.toFixed(2)}px`);
+        card.style.setProperty("--card-ty", `${ty.toFixed(2)}px`);
+        card.style.setProperty("--shine-x", `${(px * 100).toFixed(1)}%`);
+        card.style.setProperty("--shine-y", `${(py * 100).toFixed(1)}%`);
+      }
+
+      card.addEventListener("pointermove", (e) => {
+        update(e.clientX, e.clientY);
+      });
+
+      card.addEventListener("pointerleave", reset);
+
+      card.addEventListener("touchmove", (e) => {
+        const t = e.touches[0];
+        if (!t) return;
+        update(t.clientX, t.clientY);
+      }, { passive: true });
+
+      card.addEventListener("touchend", reset);
+      card.addEventListener("touchcancel", reset);
+
+      reset();
+    }
+
+    document.querySelectorAll(".tilt-card").forEach(bindTilt);
+
+    /* =========================
+       Timetable
+    ========================= */
+    const subjectsMap = {
+      "X1": "Elective 1",
+      "X2": "Elective 2",
+      "X3": "Elective 3"
+    };
+
+    const timetable = {
+      A: [
+        { time: "8:20-9:00", subject: "CITT. & SOC." },
+        { time: "9:00-9:40", subject: "CITT. & SOC." },
+        { time: "9:40-9:55", subject: "Recess" },
+        { time: "10:00-10:40", subject: "X3" },
+        { time: "10:40-11:20", subject: "X3" },
+        { time: "11:25-12:05", subject: "CHIN." },
+        { time: "12:05-13:05", subject: "Lunch" },
+        { time: "13:10-13:45", subject: "ENG." },
+        { time: "13:45-14:20", subject: "ENG." },
+        { time: "14:25-15:00", subject: "MATH." },
+        { time: "15:00-15:35", subject: "Assembly" }
+      ],
+      B: [
+        { time: "8:20-9:00", subject: "X1" },
+        { time: "9:00-9:40", subject: "X1" },
+        { time: "9:40-9:55", subject: "Recess" },
+        { time: "10:00-10:40", subject: "ENG." },
+        { time: "10:40-11:20", subject: "CHIN." },
+        { time: "11:25-12:05", subject: "CHIN." },
+        { time: "12:05-13:05", subject: "Lunch" },
+        { time: "13:10-13:45", subject: "MATH." },
+        { time: "13:45-14:20", subject: "MATH." },
+        { time: "14:25-15:00", subject: "X2" },
+        { time: "15:00-15:35", subject: "X2" }
+      ],
+      C: [
+        { time: "8:00-8:15", subject: "Assembly" },
+        { time: "8:20-9:00", subject: "MATH." },
+        { time: "9:00-9:40", subject: "MATH." },
+        { time: "9:40-9:55", subject: "Recess" },
+        { time: "10:00-10:40", subject: "X1" },
+        { time: "10:40-11:20", subject: "X1" },
+        { time: "11:25-12:05", subject: "CHIN." },
+        { time: "12:05-13:05", subject: "Lunch" },
+        { time: "13:10-13:45", subject: "X3" },
+        { time: "13:45-14:20", subject: "X3" },
+        { time: "14:25-15:00", subject: "ENG." },
+        { time: "15:00-15:35", subject: "ENG." }
+      ],
+      D: [
+        { time: "8:20-9:00", subject: "X2" },
+        { time: "9:00-9:40", subject: "X2" },
+        { time: "9:40-9:55", subject: "Recess" },
+        { time: "10:00-10:40", subject: "SPEAKING" },
+        { time: "10:40-11:20", subject: "MATH." },
+        { time: "11:25-12:05", subject: "MATH." },
+        { time: "12:05-13:05", subject: "Lunch" },
+        { time: "13:10-13:45", subject: "ENG.EN." },
+        { time: "13:45-14:20", subject: "ENG.EN." },
+        { time: "14:25-15:00", subject: "Assembly" },
+        { time: "15:00-15:35", subject: "Assembly" }
+      ],
+      E: [
+        { time: "8:20-9:00", subject: "P.E." },
+        { time: "9:00-9:40", subject: "P.E." },
+        { time: "9:40-9:55", subject: "Recess" },
+        { time: "10:00-10:40", subject: "CITT. & SOC." },
+        { time: "10:40-11:20", subject: "CHIN." },
+        { time: "11:25-12:05", subject: "CHIN." },
+        { time: "12:05-13:05", subject: "Lunch" },
+        { time: "13:10-13:45", subject: "X1" },
+        { time: "13:45-14:20", subject: "X1" },
+        { time: "14:25-15:00", subject: "ENG." },
+        { time: "15:00-15:35", subject: "CHIN." }
+      ],
+      W: [
+        { time: "8:00-8:45", subject: "Assembly" },
+        { time: "8:50-9:20", subject: "X3" },
+        { time: "9:20-9:50", subject: "X3" },
+        { time: "9:50-10:05", subject: "Recess" },
+        { time: "10:10-10:40", subject: "ENG." },
+        { time: "10:40-11:10", subject: "ENG." },
+        { time: "11:15-11:45", subject: "X2" },
+        { time: "11:45-12:15", subject: "X2" },
+        { time: "12:15-13:30", subject: "Lunch" },
+        { time: "13:35-14:05", subject: "CHIN." },
+        { time: "14:05-14:35", subject: "CHIN." }
+      ]
+    };
+
+    const schoolCalendar2026 = {
+      3: { 28: "none", 29: "none", 30: "E", 31: "A" },
+      4: {
+        1: "none", 2: "none", 3: "none", 4: "none", 5: "none", 6: "none", 7: "none", 8: "none",
+        9: "B", 10: "C", 11: "none", 12: "none", 13: "D", 14: "E", 15: "W", 16: "A", 17: "B",
+        18: "none", 19: "none", 20: "C", 21: "D", 22: "W", 23: "E", 24: "A", 25: "none",
+        26: "none", 27: "B", 28: "C", 29: "W", 30: "D"
+      }
+    };
+
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const dayNamesShort = ["S", "M", "T", "W", "T", "F", "S"];
+
+    const hkNow = getHKDateObject();
+    let currentDate = new Date(hkNow.getFullYear(), hkNow.getMonth(), hkNow.getDate());
+    let selectedDate = new Date(hkNow.getFullYear(), hkNow.getMonth(), hkNow.getDate());
+    let viewMonthDate = new Date(hkNow.getFullYear(), hkNow.getMonth(), 1);
+
+    const calMonthYear = document.getElementById("cal-month-year");
+    const calGrid = document.getElementById("cal-grid");
+    const scheduleDayTitle = document.getElementById("schedule-day-title");
+    const scheduleDateSubtitle = document.getElementById("schedule-date-subtitle");
+    const scheduleBadge = document.getElementById("schedule-badge");
+    const scheduleList = document.getElementById("schedule-list");
+
+    function getDayType(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = dateObj.getMonth() + 1;
+      const d = dateObj.getDate();
+      if (y === 2026 && schoolCalendar2026[m] && schoolCalendar2026[m][d]) {
+        return schoolCalendar2026[m][d];
+      }
+      return "none";
+    }
+
+    function renderCalendar() {
+      const year = viewMonthDate.getFullYear();
+      const month = viewMonthDate.getMonth();
+
+      calMonthYear.textContent = `${monthNames[month]} ${year}`;
+      calGrid.innerHTML = "";
+
+      dayNamesShort.forEach(day => {
+        calGrid.insertAdjacentHTML("beforeend", `<div class="cal-day-name">${day}</div>`);
+      });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+      for (let i = firstDay - 1; i >= 0; i--) {
+        calGrid.insertAdjacentHTML("beforeend", `<div class="cal-date muted">${daysInPrevMonth - i}</div>`);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dayType = getDayType(dateObj);
+        const hasClass = dayType !== "none";
+
+        let classes = "cal-date";
+        if (isSameDay(dateObj, currentDate)) classes += " today";
+        if (isSameDay(dateObj, selectedDate)) classes += " selected";
+
+        calGrid.insertAdjacentHTML(
+          "beforeend",
+          `<div class="${classes}" data-year="${year}" data-month="${month}" data-day="${day}">
+            ${day}
+            ${hasClass ? '<div class="cal-dot"></div>' : ""}
+          </div>`
+        );
+      }
+    }
+
+    calGrid.addEventListener("click", (e) => {
+      const cell = e.target.closest(".cal-date[data-year]");
+      if (!cell) return;
+
+      const y = Number(cell.dataset.year);
+      const m = Number(cell.dataset.month);
+      const d = Number(cell.dataset.day);
+
+      selectedDate = new Date(y, m, d);
+      renderCalendar();
+      renderSchedule();
+    });
+
+    document.getElementById("cal-prev").addEventListener("click", () => {
+      viewMonthDate.setMonth(viewMonthDate.getMonth() - 1);
+      renderCalendar();
+    });
+
+    document.getElementById("cal-next").addEventListener("click", () => {
+      viewMonthDate.setMonth(viewMonthDate.getMonth() + 1);
+      renderCalendar();
+    });
+
+    function timeToMinutes(rangeStartOrEnd) {
+      const [h, m] = rangeStartOrEnd.split(":").map(Number);
+      return h * 60 + m;
+    }
+
+    function renderSchedule() {
+      const isToday = isSameDay(selectedDate, currentDate);
+      scheduleDayTitle.textContent = isToday ? "Today's Schedule" : "Selected Schedule";
+      scheduleDateSubtitle.textContent = new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      }).format(selectedDate);
+
+      const dayType = getDayType(selectedDate);
+
+      if (dayType === "none" || !timetable[dayType]) {
+        scheduleBadge.textContent = "Holiday";
+        scheduleList.innerHTML = `<div class="empty-state">🎉 沒有排程，享受生活吧！</div>`;
+        return;
+      }
+
+      scheduleBadge.textContent = `Day ${dayType}`;
+      scheduleList.innerHTML = "";
+
+      const hk = getHKParts();
+      const currentMins = hk.hour * 60 + hk.minute;
+
+      timetable[dayType].forEach(period => {
+        const [startText, endText] = period.time.split("-");
+        const start = timeToMinutes(startText);
+        const end = timeToMinutes(endText);
+
+        const isCurrent = isToday && currentMins >= start && currentMins < end;
+        const displayName = subjectsMap[period.subject] || period.subject;
+
+        scheduleList.insertAdjacentHTML(
+          "beforeend",
+          `<div class="period-item ${isCurrent ? "current" : ""}">
+            <div class="period-time">${period.time}</div>
+            <div class="period-subject">${displayName}</div>
+            ${isCurrent ? '<div class="period-status">Now</div>' : ""}
+          </div>`
+        );
+      });
+
+      if (isToday) {
+        requestAnimationFrame(() => {
+          const currentEl = scheduleList.querySelector(".period-item.current");
+          if (currentEl) {
+            currentEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        });
+      }
+    }
+
+    function refreshTodayDate() {
+      const hkDate = getHKDateObject();
+      currentDate = new Date(hkDate.getFullYear(), hkDate.getMonth(), hkDate.getDate());
+
+      if (isSameDay(selectedDate, currentDate)) {
+        renderSchedule();
+      }
+      renderCalendar();
+    }
+
+    renderCalendar();
+    renderSchedule();
+
+   
+
+    setInterval(() => {
+      refreshTodayDate();
+    }, 60000);
+        
+    /* =========================
+   Wallpaper Modal Logic
+========================= */
+const customWallpapers = [
+  { thumb: "IMG_2046_thumb.jpeg", full: "IMG_2046.jpeg" },
+  { thumb: "IMG_1087_thumb.jpeg", full: "IMG_1087.jpeg" },
+  { thumb: "IMG_1120_thumb.jpeg", full: "IMG_1120.jpeg" },
+  { thumb: "IMG_8551_thumb.jpeg", full: "IMG_8551.jpeg" },
+  { thumb: "IMG_0323_thumb.jpeg", full: "IMG_0323.jpeg" },
+  { thumb: "IMG_0889_thumb.jpeg", full: "IMG_0889.jpeg" }
+];
+
+const wpModal = document.getElementById("wallpaper-modal-overlay");
+const btnWallpaper = document.getElementById("btn-wallpaper");
+const btnCloseModal = document.getElementById("modal-close");
+const wpGrid = document.getElementById("wallpaper-grid");
+const btnResetBing = document.getElementById("btn-reset-bing");
+const bgLoader = document.getElementById("bg-loader");
+
+function switchBackgroundTo(url, duration = 900) {
+  standbyBg.style.backgroundImage = `url("${url}")`;
+  standbyBg.style.transform = "scale(1.08)";
+  standbyBg.style.opacity = "0";
+
+  requestAnimationFrame(() => {
+    standbyBg.style.opacity = "1";
+    standbyBg.style.transform = "scale(1.04)";
+    activeBg.style.opacity = "0";
+  });
+
+  setTimeout(() => {
+    const temp = activeBg;
+    activeBg = standbyBg;
+    standbyBg = temp;
+    standbyBg.style.transform = "scale(1.08)";
+    standbyBg.style.opacity = "0";
+  }, duration);
+}
+
+function applyCustomWallpaper(url) {
+  if (!url) return;
+
+  if (bgLoader) bgLoader.classList.add("active");
+
+  const img = new Image();
+  img.src = url;
+
+  img.onload = () => {
+    if (bgLoader) bgLoader.classList.remove("active");
+    switchBackgroundTo(url, 120);
+  };
+
+  img.onerror = () => {
+    if (bgLoader) bgLoader.classList.remove("active");
+    console.error("自定义壁纸加载失败：", url);
+  };
+}
+
+function renderWallpaperGrid() {
+  wpGrid.innerHTML = "";
+  const currentBg = localStorage.getItem("custom_wallpaper");
+
+  customWallpapers.forEach((wp) => {
+    const div = document.createElement("div");
+    div.className = "wp-item";
+    div.style.backgroundImage = `url("${wp.thumb}")`;
+
+    if (currentBg === wp.full) {
+      div.classList.add("active");
+    }
+
+    div.addEventListener("click", () => {
+      localStorage.setItem("custom_wallpaper", wp.full);
+      applyCustomWallpaper(wp.full);
+      renderWallpaperGrid();
+    });
+
+    wpGrid.appendChild(div);
+  });
+}
+
+btnWallpaper.addEventListener("click", (e) => {
+  e.preventDefault();
+  wpModal.classList.add("active");
+  renderWallpaperGrid();
+});
+
+btnCloseModal.addEventListener("click", () => {
+  wpModal.classList.remove("active");
+});
+
+wpModal.addEventListener("click", (e) => {
+  if (e.target === wpModal) {
+    wpModal.classList.remove("active");
+  }
+});
+
+btnResetBing.addEventListener("click", () => {
+  localStorage.removeItem("custom_wallpaper");
+  wpModal.classList.remove("active");
+  swapBackground(true);
+});
+
+function applyInstantBackground(url) {
+  if (!url) return;
+  activeBg.style.backgroundImage = `url("${url}")`;
+  activeBg.style.opacity = "1";
+  activeBg.style.transform = "scale(1.04)";
+}
+
+async function refreshBingWallpaperInBackground() {
+  try {
+    const data = await getBingWallpaper();
+    if (!data?.url) return;
+
+    const currentCustom = localStorage.getItem("custom_wallpaper");
+    if (currentCustom) return;
+
+    const cachedShown = localStorage.getItem("last_shown_wallpaper");
+    if (cachedShown === data.url) return;
+
+    localStorage.setItem("last_shown_wallpaper", data.url);
+    switchBackgroundTo(data.url, 900);
+  } catch (err) {
+    console.error("后台刷新 Bing 壁纸失败：", err);
+  }
+}
+
+function initAppBackground() {
+  const customUrl = localStorage.getItem("custom_wallpaper");
+  const cachedBing = localStorage.getItem("last_shown_wallpaper");
+
+  if (customUrl) {
+    applyInstantBackground(customUrl);
+    return;
+  }
+
+  if (cachedBing) {
+    applyInstantBackground(cachedBing);
+  } else {
+    applyInstantBackground(getFallbackWallpaper());
+  }
+
+  window.addEventListener("load", () => {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(() => refreshBingWallpaperInBackground(), { timeout: 2000 });
+    } else {
+      setTimeout(refreshBingWallpaperInBackground, 800);
+    }
+  }, { once: true });
+}
+
+initAppBackground();
+
+setInterval(() => {
+  if (!localStorage.getItem("custom_wallpaper")) {
+    swapBackground(false);
+  }
+}, 6 * 60 * 60 * 1000);
+
+  </script>
+</body>
+</html>
