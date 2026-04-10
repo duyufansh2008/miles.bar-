@@ -1,0 +1,85 @@
+name: Extract uploaded site zip v3
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  extract-site:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract latest site zip
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ZIP_FILE=$(ls -t miles.bar_*.zip 2>/dev/null | head -n 1 || true)
+          if [ -z "${ZIP_FILE:-}" ]; then
+            echo "No miles.bar zip file found."
+            exit 1
+          fi
+          echo "Using $ZIP_FILE"
+
+          rm -rf workdir
+          mkdir -p workdir
+          unzip -q "$ZIP_FILE" -d workdir
+
+          rm -rf workdir/__MACOSX
+          find workdir -type f -name '._*' -delete
+          find workdir -type f -name '.DS_Store' -delete
+
+          SOURCE_DIR=""
+          for d in workdir/*; do
+            if [ -d "$d" ] && [ "$(basename "$d")" != "__MACOSX" ]; then
+              SOURCE_DIR="$d"
+              break
+            fi
+          done
+
+          if [ -z "$SOURCE_DIR" ]; then
+            SOURCE_DIR="workdir"
+          fi
+
+          echo "Syncing from $SOURCE_DIR"
+
+          rsync -a --delete --prune-empty-dirs \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='README.md' \
+            --exclude='*.zip' \
+            --exclude='node_modules/' \
+            --exclude='__MACOSX/' \
+            --exclude='._*' \
+            --exclude='.DS_Store' \
+            "$SOURCE_DIR"/ ./
+
+          find . -path './.git' -prune -o -path './.github' -prune -o -type f -name '._*' -delete
+          find . -path './.git' -prune -o -path './.github' -prune -o -type f -name '.DS_Store' -delete
+
+          printf 'node_modules/\n__MACOSX/\n*.zip\n.DS_Store\n' > .gitignore
+          rm -rf workdir
+
+      - name: Commit site files
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Extract site files reliably from uploaded zip [skip ci]"
+          git push
