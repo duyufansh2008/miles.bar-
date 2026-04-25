@@ -1,0 +1,1209 @@
+# 精简版 Clash 配置：仅保留节点、ChatGPT/OpenAI 规则、Global 分组
+# 基于原订阅生成；如原订阅节点过期，请重新用新订阅生成。
+
+port: 7890
+socks-port: 7891
+redir-port: 7892
+tproxy-port: 7893
+mixed-port: 7894
+allow-lan: true
+bind-address: '*'
+mode: rule
+ipv6: true
+log-level: info
+external-controller: 0.0.0.0:9090
+unified-delay: true
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  use-hosts: true
+  fake-ip-range: 11.18.0.1/16
+  default-nameserver:
+  - 223.5.5.5
+  - 114.114.114.114
+proxies:
+- name: 1❤️官网：bbxy88.com
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15150
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 2❤️官网：bbxy88.xyz
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15150
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 3❤️官网：bbxy88.top
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15150
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A10 香港 HKT | 家宽
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15150
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A11 香港 Akile
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15205
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A12 香港 Akile
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15194
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A15 香港 Akile
+  type: ssr
+  server: cdn-p1-hk.bblink88.com
+  port: 15131
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A16 香港
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 27000
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A17 香港
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15190
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A18 香港
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15203
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A19 香港
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15204
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: A20 香港
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15177
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 香港直连（移动联通推荐！）01
+  type: anytls
+  server: aisa.bblink88.com
+  port: 22211
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 香港直连（移动联通推荐！）02
+  type: anytls
+  server: aisa.bblink88.com
+  port: 22210
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 香港直连（移动联通推荐！）03
+  type: anytls
+  server: aisa.bblink88.com
+  port: 22212
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 香港直连（移动联通推荐！）04
+  type: anytls
+  server: aisa.bblink88.com
+  port: 22213
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 香港直连（移动联通推荐！）05
+  type: anytls
+  server: aisa.bblink88.com
+  port: 22214
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: B12 新加坡
+  type: ssr
+  server: cdn-p1-sg.bblink88.com
+  port: 15176
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B13 新加坡
+  type: ssr
+  server: cdn-p1-sg.bblink88.com
+  port: 15162
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B14 新加坡
+  type: ssr
+  server: cdn-p1-sg.bblink88.com
+  port: 15163
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B15 新加坡
+  type: ssr
+  server: cdn-p1-sg.bblink88.com
+  port: 15911
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B21 新加坡
+  type: ssr
+  server: cdn-p1-sg.bblink88.com
+  port: 15007
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B22 新加坡
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 27103
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B23 新加坡
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15191
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: B24 新加坡
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15187
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 新加坡直连（移动联通推荐！）01
+  type: anytls
+  server: sg.bblink88.com
+  port: 22215
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 新加坡直连（移动联通推荐！）02
+  type: anytls
+  server: sg.bblink88.com
+  port: 22216
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 新加坡直连（移动联通推荐！）03
+  type: anytls
+  server: sg.bblink88.com
+  port: 22217
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 新加坡直连（移动联通推荐！）04
+  type: anytls
+  server: sg.bblink88.com
+  port: 22218
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 新加坡直连（移动联通推荐！）05
+  type: anytls
+  server: sg.bblink88.com
+  port: 22219
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: C11 日本
+  type: ssr
+  server: cdn-p1-jp.bblink88.com
+  port: 15095
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C12 日本
+  type: ssr
+  server: cdn-p1-jp.bblink88.com
+  port: 15171
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C13 日本
+  type: ssr
+  server: cdn-p1-jp.bblink88.com
+  port: 15184
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C14 日本
+  type: ssr
+  server: ieplqz.bblink88.com
+  port: 15200
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 日本直连（移动联通推荐！）01
+  type: anytls
+  server: jp.bblink88.com
+  port: 22202
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 日本直连（移动联通推荐！）02
+  type: anytls
+  server: jp.bblink88.com
+  port: 22188
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 日本直连（移动联通推荐！）03
+  type: anytls
+  server: jp.bblink88.com
+  port: 22220
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 日本直连（移动联通推荐！）04
+  type: anytls
+  server: jp.bblink88.com
+  port: 22221
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 日本直连（移动联通推荐！）05
+  type: anytls
+  server: jp.bblink88.com
+  port: 22222
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: C43 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15165
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C45 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15080
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C46 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15091
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C47 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15182
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C48 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15183
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C49 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15198
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C50 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15170
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C51 美国
+  type: ssr
+  server: cdn-p1-us.bblink88.com
+  port: 15185
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 美国直连（移动联通推荐！）01
+  type: anytls
+  server: us.bblink88.com
+  port: 22225
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 美国直连（移动联通推荐！）02
+  type: anytls
+  server: us.bblink88.com
+  port: 22226
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 美国直连（移动联通推荐！）03
+  type: anytls
+  server: us.bblink88.com
+  port: 22227
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 美国直连（移动联通推荐！）04
+  type: anytls
+  server: us.bblink88.com
+  port: 22228
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 美国直连（移动联通推荐！）05
+  type: anytls
+  server: us.bblink88.com
+  port: 22229
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: A05台湾三网直连(偶尔断流)
+  type: trojan
+  server: web.bblink88.com
+  port: 443
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  sni: xy209.douyinvod.com
+  skip-cert-verify: true
+  udp: true
+- name: C52 台湾 | 家宽
+  type: ssr
+  server: cdn-p1-tw.bblink88.com
+  port: 15206
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C53 韩国
+  type: ssr
+  server: cdn-p1-kr.bblink88.com
+  port: 15179
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C54 马来西亚 | 家宽
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15030
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C55 泰国
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15174
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C56 印度
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15120
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C57 印度
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15189
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L21 土耳其
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15152
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 印度直连（移动联通推荐！）01
+  type: anytls
+  server: in.bblink88.com
+  port: 22234
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 台湾直连（移动联通推荐！）01
+  type: anytls
+  server: tw.bblink88.com
+  port: 22230
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 土耳其直连（移动联通推荐！）01
+  type: anytls
+  server: tr.bblink88.com
+  port: 22241
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 泰国直连（移动联通推荐！）01
+  type: anytls
+  server: th.bblink88.com
+  port: 22233
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 韩国直连（移动联通推荐！）01
+  type: anytls
+  server: kr.bblink88.com
+  port: 22231
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 马来西亚直连（移动联通推荐！）01
+  type: anytls
+  server: my.bblink88.com
+  port: 22232
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: C71 澳大利亚
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15097
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: C81 加拿大
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15089
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L01 英国
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15096
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L02 英国
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15192
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L03 英国
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15160
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L04 德国
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15121
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L05 德国
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15193
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L08 意大利
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15907
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: L11 阿根廷
+  type: ssr
+  server: cdn-p1-lm.bblink88.com
+  port: 15169
+  cipher: chacha20-ietf
+  password: MkneJaoFZXZr
+  protocol: auth_aes128_md5
+  protocol-param: 5945:AoY82py4dbpk6ZQr
+  obfs: plain
+  obfs-param: e8b1b5945.microsoft.com
+- name: 加拿大直连（移动联通推荐！）01
+  type: anytls
+  server: ca.bblink88.com
+  port: 22236
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 德国直连（移动联通推荐！）01
+  type: anytls
+  server: de.bblink88.com
+  port: 22238
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 意大利直连（移动联通推荐！）01
+  type: anytls
+  server: it.bblink88.com
+  port: 22239
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 澳大利亚直连（移动联通推荐！）01
+  type: anytls
+  server: au.bblink88.com
+  port: 22235
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 英国直连（移动联通推荐！）01
+  type: anytls
+  server: uk.bblink88.com
+  port: 22237
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+- name: 阿根廷直连（移动联通推荐！）01
+  type: anytls
+  server: ar.bblink88.com
+  port: 22240
+  password: ca727ae6-2293-3aa7-a961-e5698bdbfa77
+  udp: true
+  sni: www.bing.com
+  skip-cert-verify: true
+  alpn:
+  - h2
+  - http/1.1
+proxy-groups:
+- name: 🤖 ChatGPT
+  type: select
+  proxies:
+  - ⚓ 节点选择
+  - ♻️ 自动选择（普通节点）
+  - 1❤️官网：bbxy88.com
+  - 2❤️官网：bbxy88.xyz
+  - 3❤️官网：bbxy88.top
+  - A10 香港 HKT | 家宽
+  - A11 香港 Akile
+  - A12 香港 Akile
+  - A15 香港 Akile
+  - A16 香港
+  - A17 香港
+  - A18 香港
+  - A19 香港
+  - A20 香港
+  - 香港直连（移动联通推荐！）01
+  - 香港直连（移动联通推荐！）02
+  - 香港直连（移动联通推荐！）03
+  - 香港直连（移动联通推荐！）04
+  - 香港直连（移动联通推荐！）05
+  - B12 新加坡
+  - B13 新加坡
+  - B14 新加坡
+  - B15 新加坡
+  - B21 新加坡
+  - B22 新加坡
+  - B23 新加坡
+  - B24 新加坡
+  - 新加坡直连（移动联通推荐！）01
+  - 新加坡直连（移动联通推荐！）02
+  - 新加坡直连（移动联通推荐！）03
+  - 新加坡直连（移动联通推荐！）04
+  - 新加坡直连（移动联通推荐！）05
+  - C11 日本
+  - C12 日本
+  - C13 日本
+  - C14 日本
+  - 日本直连（移动联通推荐！）01
+  - 日本直连（移动联通推荐！）02
+  - 日本直连（移动联通推荐！）03
+  - 日本直连（移动联通推荐！）04
+  - 日本直连（移动联通推荐！）05
+  - C43 美国
+  - C45 美国
+  - C46 美国
+  - C47 美国
+  - C48 美国
+  - C49 美国
+  - C50 美国
+  - C51 美国
+  - 美国直连（移动联通推荐！）01
+  - 美国直连（移动联通推荐！）02
+  - 美国直连（移动联通推荐！）03
+  - 美国直连（移动联通推荐！）04
+  - 美国直连（移动联通推荐！）05
+  - A05台湾三网直连(偶尔断流)
+  - C52 台湾 | 家宽
+  - C53 韩国
+  - C54 马来西亚 | 家宽
+  - C55 泰国
+  - C56 印度
+  - C57 印度
+  - L21 土耳其
+  - 印度直连（移动联通推荐！）01
+  - 台湾直连（移动联通推荐！）01
+  - 土耳其直连（移动联通推荐！）01
+  - 泰国直连（移动联通推荐！）01
+  - 韩国直连（移动联通推荐！）01
+  - 马来西亚直连（移动联通推荐！）01
+  - C71 澳大利亚
+  - C81 加拿大
+  - L01 英国
+  - L02 英国
+  - L03 英国
+  - L04 德国
+  - L05 德国
+  - L08 意大利
+  - L11 阿根廷
+  - 加拿大直连（移动联通推荐！）01
+  - 德国直连（移动联通推荐！）01
+  - 意大利直连（移动联通推荐！）01
+  - 澳大利亚直连（移动联通推荐！）01
+  - 英国直连（移动联通推荐！）01
+  - 阿根廷直连（移动联通推荐！）01
+  - DIRECT
+- name: 🌐 Global
+  type: select
+  proxies:
+  - ⚓ 节点选择
+  - ♻️ 自动选择（普通节点）
+  - 1❤️官网：bbxy88.com
+  - 2❤️官网：bbxy88.xyz
+  - 3❤️官网：bbxy88.top
+  - A10 香港 HKT | 家宽
+  - A11 香港 Akile
+  - A12 香港 Akile
+  - A15 香港 Akile
+  - A16 香港
+  - A17 香港
+  - A18 香港
+  - A19 香港
+  - A20 香港
+  - 香港直连（移动联通推荐！）01
+  - 香港直连（移动联通推荐！）02
+  - 香港直连（移动联通推荐！）03
+  - 香港直连（移动联通推荐！）04
+  - 香港直连（移动联通推荐！）05
+  - B12 新加坡
+  - B13 新加坡
+  - B14 新加坡
+  - B15 新加坡
+  - B21 新加坡
+  - B22 新加坡
+  - B23 新加坡
+  - B24 新加坡
+  - 新加坡直连（移动联通推荐！）01
+  - 新加坡直连（移动联通推荐！）02
+  - 新加坡直连（移动联通推荐！）03
+  - 新加坡直连（移动联通推荐！）04
+  - 新加坡直连（移动联通推荐！）05
+  - C11 日本
+  - C12 日本
+  - C13 日本
+  - C14 日本
+  - 日本直连（移动联通推荐！）01
+  - 日本直连（移动联通推荐！）02
+  - 日本直连（移动联通推荐！）03
+  - 日本直连（移动联通推荐！）04
+  - 日本直连（移动联通推荐！）05
+  - C43 美国
+  - C45 美国
+  - C46 美国
+  - C47 美国
+  - C48 美国
+  - C49 美国
+  - C50 美国
+  - C51 美国
+  - 美国直连（移动联通推荐！）01
+  - 美国直连（移动联通推荐！）02
+  - 美国直连（移动联通推荐！）03
+  - 美国直连（移动联通推荐！）04
+  - 美国直连（移动联通推荐！）05
+  - A05台湾三网直连(偶尔断流)
+  - C52 台湾 | 家宽
+  - C53 韩国
+  - C54 马来西亚 | 家宽
+  - C55 泰国
+  - C56 印度
+  - C57 印度
+  - L21 土耳其
+  - 印度直连（移动联通推荐！）01
+  - 台湾直连（移动联通推荐！）01
+  - 土耳其直连（移动联通推荐！）01
+  - 泰国直连（移动联通推荐！）01
+  - 韩国直连（移动联通推荐！）01
+  - 马来西亚直连（移动联通推荐！）01
+  - C71 澳大利亚
+  - C81 加拿大
+  - L01 英国
+  - L02 英国
+  - L03 英国
+  - L04 德国
+  - L05 德国
+  - L08 意大利
+  - L11 阿根廷
+  - 加拿大直连（移动联通推荐！）01
+  - 德国直连（移动联通推荐！）01
+  - 意大利直连（移动联通推荐！）01
+  - 澳大利亚直连（移动联通推荐！）01
+  - 英国直连（移动联通推荐！）01
+  - 阿根廷直连（移动联通推荐！）01
+  - DIRECT
+- name: ⚓ 节点选择
+  type: select
+  proxies:
+  - ♻️ 自动选择（普通节点）
+  - 1❤️官网：bbxy88.com
+  - 2❤️官网：bbxy88.xyz
+  - 3❤️官网：bbxy88.top
+  - A10 香港 HKT | 家宽
+  - A11 香港 Akile
+  - A12 香港 Akile
+  - A15 香港 Akile
+  - A16 香港
+  - A17 香港
+  - A18 香港
+  - A19 香港
+  - A20 香港
+  - 香港直连（移动联通推荐！）01
+  - 香港直连（移动联通推荐！）02
+  - 香港直连（移动联通推荐！）03
+  - 香港直连（移动联通推荐！）04
+  - 香港直连（移动联通推荐！）05
+  - B12 新加坡
+  - B13 新加坡
+  - B14 新加坡
+  - B15 新加坡
+  - B21 新加坡
+  - B22 新加坡
+  - B23 新加坡
+  - B24 新加坡
+  - 新加坡直连（移动联通推荐！）01
+  - 新加坡直连（移动联通推荐！）02
+  - 新加坡直连（移动联通推荐！）03
+  - 新加坡直连（移动联通推荐！）04
+  - 新加坡直连（移动联通推荐！）05
+  - C11 日本
+  - C12 日本
+  - C13 日本
+  - C14 日本
+  - 日本直连（移动联通推荐！）01
+  - 日本直连（移动联通推荐！）02
+  - 日本直连（移动联通推荐！）03
+  - 日本直连（移动联通推荐！）04
+  - 日本直连（移动联通推荐！）05
+  - C43 美国
+  - C45 美国
+  - C46 美国
+  - C47 美国
+  - C48 美国
+  - C49 美国
+  - C50 美国
+  - C51 美国
+  - 美国直连（移动联通推荐！）01
+  - 美国直连（移动联通推荐！）02
+  - 美国直连（移动联通推荐！）03
+  - 美国直连（移动联通推荐！）04
+  - 美国直连（移动联通推荐！）05
+  - A05台湾三网直连(偶尔断流)
+  - C52 台湾 | 家宽
+  - C53 韩国
+  - C54 马来西亚 | 家宽
+  - C55 泰国
+  - C56 印度
+  - C57 印度
+  - L21 土耳其
+  - 印度直连（移动联通推荐！）01
+  - 台湾直连（移动联通推荐！）01
+  - 土耳其直连（移动联通推荐！）01
+  - 泰国直连（移动联通推荐！）01
+  - 韩国直连（移动联通推荐！）01
+  - 马来西亚直连（移动联通推荐！）01
+  - C71 澳大利亚
+  - C81 加拿大
+  - L01 英国
+  - L02 英国
+  - L03 英国
+  - L04 德国
+  - L05 德国
+  - L08 意大利
+  - L11 阿根廷
+  - 加拿大直连（移动联通推荐！）01
+  - 德国直连（移动联通推荐！）01
+  - 意大利直连（移动联通推荐！）01
+  - 澳大利亚直连（移动联通推荐！）01
+  - 英国直连（移动联通推荐！）01
+  - 阿根廷直连（移动联通推荐！）01
+  - DIRECT
+- name: ♻️ 自动选择（普通节点）
+  type: url-test
+  proxies:
+  - A10 香港 HKT | 家宽
+  - A11 香港 Akile
+  - A12 香港 Akile
+  - A15 香港 Akile
+  - A16 香港
+  - A17 香港
+  - A18 香港
+  - A19 香港
+  - A20 香港
+  - B12 新加坡
+  - B13 新加坡
+  - B14 新加坡
+  - B15 新加坡
+  - B21 新加坡
+  - B22 新加坡
+  - B23 新加坡
+  - B24 新加坡
+  - C11 日本
+  - C12 日本
+  - C13 日本
+  - C14 日本
+  - C43 美国
+  - C45 美国
+  - C46 美国
+  - C47 美国
+  - C48 美国
+  - C49 美国
+  - C50 美国
+  - C51 美国
+  - C52 台湾 | 家宽
+  - C53 韩国
+  - C54 马来西亚 | 家宽
+  - C55 泰国
+  - C56 印度
+  - C57 印度
+  - L21 土耳其
+  - C71 澳大利亚
+  - C81 加拿大
+  - L01 英国
+  - L02 英国
+  - L03 英国
+  - L04 德国
+  - L05 德国
+  - L08 意大利
+  - L11 阿根廷
+  url: http://cp.cloudflare.com
+  interval: 300
+  tolerance: 50
+rules:
+- DOMAIN-SUFFIX,chatgpt.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,chat.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,openai.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,oaistatic.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,oaiusercontent.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🤖 ChatGPT
+- DOMAIN-SUFFIX,auth0.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,challenges.cloudflare.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,client-api.arkoselabs.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,arkoselabs.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,events.statsigapi.net,🤖 ChatGPT
+- DOMAIN-SUFFIX,featuregates.org,🤖 ChatGPT
+- DOMAIN-SUFFIX,intercom.io,🤖 ChatGPT
+- DOMAIN-SUFFIX,intercomcdn.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,sentry.io,🤖 ChatGPT
+- DOMAIN-SUFFIX,stripe.com,🤖 ChatGPT
+- DOMAIN-SUFFIX,identrust.com,🤖 ChatGPT
+- DOMAIN-KEYWORD,openai,🤖 ChatGPT
+- DOMAIN-KEYWORD,chatgpt,🤖 ChatGPT
+- DOMAIN-SUFFIX,localhost,DIRECT
+- DOMAIN-SUFFIX,local,DIRECT
+- DOMAIN-SUFFIX,lan,DIRECT
+- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+- IP-CIDR6,::1/128,DIRECT,no-resolve
+- IP-CIDR6,fc00::/7,DIRECT,no-resolve
+- IP-CIDR6,fe80::/10,DIRECT,no-resolve
+- MATCH,DIRECT
